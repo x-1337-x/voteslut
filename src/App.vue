@@ -1,6 +1,7 @@
 <template>
-  <div id="app">
+  <div id="app" class="container">
     <a href="https://console.firebase.google.com/project/voteslut/database/data/">Firebase</a>
+    <nav-header></nav-header>
     <router-view></router-view>
     <ul v-for="suggestion in suggestions">
       <li>
@@ -14,15 +15,16 @@
 
 <script>
 
-import suggestions from './db/index'
-import PollForm from './components/PollForm'
+import {suggestions} from './db/index'
+import NavHeader from './components/NavHeader'
+
 
 
 export default {
   name: 'app',
 
   components: {
-    PollForm
+    NavHeader
   },
 
   firebase: {

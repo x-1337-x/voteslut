@@ -13,4 +13,4 @@ let app = Firebase.initializeApp(config)
 let db = app.database()
 let suggestions = db.ref('Suggestions')
 
-export default suggestions
+export {suggestions}
