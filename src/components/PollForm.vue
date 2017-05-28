@@ -27,10 +27,29 @@
 </template>
 
 <script>
+
+import suggestions from '../db/index'
 import App from '../App'
+
 export default {
   name: 'poll-form',
-  props: ['newSuggestion', 'addSuggestion']
+  methods: {
+    addSuggestion: function() {
+      suggestions.push(this.newSuggestion);
+      this.newSuggestion.user = '';
+      this.newSuggestion.suggestion = '';
+    }
+  },
+
+  data() {
+    return {
+      newSuggestion: {
+        id: Date.now(),
+        suggestion: '',
+        user: ''
+      }
+    }
+  }
 }
 </script>
 
