@@ -3,13 +3,6 @@
     <a href="https://console.firebase.google.com/project/voteslut/database/data/">Firebase</a>
     <nav-header></nav-header>
     <router-view></router-view>
-    <ul v-for="suggestion in suggestions">
-      <li>
-        {{ suggestion.id }}
-        {{ suggestion.user }}
-        {{ suggestion.suggestion }}
-      </li>
-    </ul>
   </div>
 </template>
 
@@ -25,10 +18,6 @@ export default {
 
   components: {
     NavHeader
-  },
-
-  firebase: {
-    suggestions
   }
 }
 </script>

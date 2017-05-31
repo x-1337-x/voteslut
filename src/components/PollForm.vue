@@ -23,6 +23,13 @@
         <button type="submit" class="btn btn-default">Submit</button>
       </form>
     </div>
+    <ul v-for="suggestion in suggestions">
+      <li>
+        {{ suggestion.id }}
+        {{ suggestion.user }}
+        {{ suggestion.suggestion }}
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -39,6 +46,10 @@ export default {
       this.newSuggestion.user = '';
       this.newSuggestion.suggestion = '';
     }
+  },
+
+  firebase: {
+    suggestions
   },
 
   data() {

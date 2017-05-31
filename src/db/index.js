@@ -12,5 +12,6 @@ const config = {
 let app = Firebase.initializeApp(config)
 let db = app.database()
 let suggestions = db.ref('Suggestions')
+let polls = db.ref('Polls')
 
-export {suggestions}
+export {suggestions, polls}
