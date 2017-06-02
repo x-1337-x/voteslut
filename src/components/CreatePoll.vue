@@ -42,13 +42,13 @@
         <button type="submit" class="btn btn-default">Submit</button>
       </form>
     </div>
-    <ul v-for="poll in polls">
-      <li>
+    <ul>
+      <li v-for="poll in polls">
         {{ poll.title }}
         {{ poll.question }}
         {{ poll.active}}
-        <ul v-for="opt in polls.options">
-          {{ opt }}
+        <ul>
+          <li v-for="el in polls, poll.options">{{ el }}</li>
         </ul>
       </li>
     </ul>

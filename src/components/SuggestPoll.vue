@@ -39,7 +39,7 @@ import {suggestions} from '../db/index'
 import App from '../App'
 
 export default {
-  name: 'poll-form',
+  name: 'suggest-poll',
   methods: {
     addSuggestion: function() {
       suggestions.push(this.newSuggestion);

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import welcome from '@/components/welcome'
-import pollForm from '@/components/PollForm'
+import suggestPoll from '@/components/SuggestPoll'
 import createPoll from '@/components/CreatePoll'
 
 Vue.use(Router)
@@ -14,9 +14,9 @@ export default new Router({
       component: welcome
     },
     {
-      path: '/PollForm',
-      name: 'pollForm',
-      component: pollForm
+      path: '/SuggestPoll',
+      name: 'SuggestPoll',
+      component: suggestPoll
     },
     {
       path: '/CreatePoll',
