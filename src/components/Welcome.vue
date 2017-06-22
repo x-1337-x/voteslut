@@ -11,13 +11,11 @@ export default {
   name: 'welcome',
   data() {
     return {
-      greeting: 'Vote Hard Or Go Home',
-      img: {}
+      greeting: 'Vote Hard Or Go Home'
     }
   },
   mounted() {
-    this.img = document.getElementById('welcome');
-    this.img.addEventListener('error', function() {this.style.display = 'none'});
+    document.getElementById('welcome').addEventListener('error', function() { this.style.display = 'none'});
   }
 }
 </script>

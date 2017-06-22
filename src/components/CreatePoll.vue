@@ -36,6 +36,21 @@
           </div>
         </div>
         <div class="form-group">
+          <label for="options">Options</label>
+          <ul class="poll-options">
+            <li v-for="(option, i) in newPoll.options">{{ option }} <button type="button" @click="removeOption(i)">X</button></li>
+          </ul>
+        </div>
+        <div class="form-group">
+          <h4 for="settings">Settings:</h4>
+          <label for="startDate">Start date</label>
+          <input type="date" class="form-control" name="startDate" v-model="newPoll.settings.start" required>
+          <label for="endDate">End date</label>
+          <input type="date" class="form-control" name="endDate" v-model="newPoll.settings.stop" required>
+          <label for="revealDate">Reveal date</label>
+          <input type="date" class="form-control" name="revealDate" v-model="newPoll.settings.reveal">
+        </div>
+        <div class="form-group">
           <input class="form-check" type="checkbox" id="isActive" v-model="newPoll.active">
           <label for="isActive">Active poll</label>
         </div>
@@ -48,7 +63,7 @@
         {{ poll.question }}
         {{ poll.active}}
         <ul>
-          <li v-for="el in polls, poll.options">{{ el }}</li>
+          <li v-for="el in poll.options">{{ el }}</li>
         </ul>
       </li>
     </ul>
@@ -62,19 +77,22 @@ import App from '../App'
 
 export default {
   name: 'add-poll',
-  methods: {
-    addPoll: function() {
-      if(this.newPoll.options.length < 2) {
-        alert("Add at least two options");
-        return;
-      }
-      console.log(this.newPoll)
-      polls.push(this.newPoll);
-      this.newPoll.title = '';
-      this.newPoll.question = '';
-    },
-    addOption: function(vaule) {
-      this.newPoll.options.push(vaule);
+  
+  data() {
+    return {
+      newPoll: {
+        title: '',
+        question: '',
+        options: [],
+        active: true,
+        settings: {
+          maxVotes: 0, // 0 - unlimited, 1+ - limited
+          start: '', // time to start vote
+          stop: '', // time to stop vote
+          reveal: '' // time to reveal
+        }
+      },
+      option: ''
     }
   },
 
@@ -82,20 +100,56 @@ export default {
     polls
   },
 
-  data() {
-    return {
-      newPoll: {
-        title: '',
-        question: '',
-        options: [],
-        active: true
-      },
-      option: {}
+  computed: {
+    now: function () {
+      return Date.now()
     }
   },
 
-  mounted() {
-    this.option = document.getElementById("option")
+  methods: {
+    addPoll: function() {
+      if(this.newPoll.options.length < 2) {
+        alert("Add at least two options");
+        return;
+      }
+
+      if(!this.validateDates()) {
+        alert("Start date cannot be set to after the end date");
+        return;
+      }
+
+      polls.push(this.newPoll);
+
+      this.newPoll.title = '';
+      this.newPoll.question = '';
+      this.newPoll.options = [];
+      this.option = '';
+      this.newPoll.settings.start = '';
+      this.newPoll.settings.stop = '';
+      this.newPoll.settings.reveal = '';
+    },
+
+    addOption: function(value) {
+      if (!value) {
+        alert('please, type in option text before adding an option');
+        return;
+      }
+      this.newPoll.options.push(value);
+      document.getElementById('option').value = '';
+    },
+
+    removeOption: function(index) {
+      this.newPoll.options.splice(index, 1);
+    },
+
+    validateDates: function() {
+      let zero = this.now;
+      let start = Date.parse(this.newPoll.settings.start);
+      let stop = Date.parse(this.newPoll.settings.stop);
+      let reveal = this.newPoll.settings.reveal == "" ? Date.parse(this.newPoll.settings.stop) : Date.parse(this.newPoll.settings.reveal);
+      console.log(zero, start, stop, reveal)
+      return (stop < start) ? false : true;
+    }
   }
 }
 </script>
