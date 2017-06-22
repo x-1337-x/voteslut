@@ -92,7 +92,8 @@ export default {
           reveal: '' // time to reveal
         }
       },
-      option: ''
+      option: '',
+      now:''
     }
   },
 
@@ -100,10 +101,9 @@ export default {
     polls
   },
 
-  computed: {
-    now: function () {
-      return Date.now()
-    }
+  mounted: function() {
+    let d = new Date(Date.now());
+    this.now = Date.parse(`${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`)
   },
 
   methods: {
@@ -114,7 +114,6 @@ export default {
       }
 
       if(!this.validateDates()) {
-        alert("Start date cannot be set to after the end date");
         return;
       }
 
@@ -144,11 +143,24 @@ export default {
 
     validateDates: function() {
       let zero = this.now;
-      let start = Date.parse(this.newPoll.settings.start);
-      let stop = Date.parse(this.newPoll.settings.stop);
-      let reveal = this.newPoll.settings.reveal == "" ? Date.parse(this.newPoll.settings.stop) : Date.parse(this.newPoll.settings.reveal);
-      console.log(zero, start, stop, reveal)
-      return (stop < start) ? false : true;
+      let start = new Date(Date.parse(this.newPoll.settings.start));
+          start = Date.parse(`${start.getFullYear()}-${start.getMonth()}-${start.getDate()}`);
+
+      let stop = new Date(Date.parse(this.newPoll.settings.stop));
+          stop = Date.parse(`${stop.getFullYear()}-${stop.getMonth()}-${stop.getDate()}`);
+
+      let reveal = new Date(this.newPoll.settings.reveal == "" ? Date.parse(this.newPoll.settings.stop) : Date.parse(this.newPoll.settings.reveal));
+          reveal = Date.parse(`${reveal.getFullYear()}-${reveal.getMonth()}-${reveal.getDate()}`);
+
+      if (stop < start) {
+        alert("Start date cannot be set to after the end date");
+        return false;
+      } else if (start < zero) {
+        alert("Start date cannot be set to before current date");
+        return false;
+      } else {
+        return true;
+      };
     }
   }
 }
