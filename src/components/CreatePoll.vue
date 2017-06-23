@@ -30,28 +30,55 @@
                    >
             <span class="input-group-btn">
               <button @click="addOption(this.option.value)"
-                    type="button"
-                    class="btn btn-secondary">Add</button>
+                      type="button"
+                      class="btn btn-secondary">
+                Add
+              </button>
             </span>
           </div>
         </div>
         <div class="form-group">
           <label for="options">Options</label>
           <ul class="poll-options">
-            <li v-for="(option, i) in newPoll.options">{{ option }} <button type="button" @click="removeOption(i)">X</button></li>
+            <li v-for="(option, i) in newPoll.options"> 
+              {{ option }}
+              <button type="button" class="btn btn-xs btn-danger" @click="removeOption(i)">
+                X
+              </button>
+            </li>
           </ul>
         </div>
         <div class="form-group">
           <h4 for="settings">Settings:</h4>
           <label for="startDate">Start date</label>
-          <input type="date" class="form-control" name="startDate" v-model="newPoll.settings.start" required>
+          <input type="date"
+                 class="form-control" 
+                 name="startDate" 
+                 v-model="newPoll.settings.start" 
+                 required>
           <label for="endDate">End date</label>
-          <input type="date" class="form-control" name="endDate" v-model="newPoll.settings.stop" required>
+          <input type="date" 
+                 class="form-control" 
+                 name="endDate" 
+                 v-model="newPoll.settings.stop" 
+                 required>
           <label for="revealDate">Reveal date</label>
-          <input type="date" class="form-control" name="revealDate" v-model="newPoll.settings.reveal">
+          <input type="date" 
+                 class="form-control" 
+                 name="revealDate" 
+                 v-model="newPoll.settings.reveal">
+          <label for="voteLimit">Vote Limit (zero = unlimited)</label>
+          <input type="number"
+                 class="form-control" 
+                 name="voteLimit" 
+                 min="0" 
+                 v-model="newPoll.settings.maxVotes">
         </div>
         <div class="form-group">
-          <input class="form-check" type="checkbox" id="isActive" v-model="newPoll.active">
+          <input class="form-check"
+                 type="checkbox" 
+                 id="isActive"
+                 v-model="newPoll.active">
           <label for="isActive">Active poll</label>
         </div>
         <button type="submit" class="btn btn-default">Submit</button>
@@ -59,11 +86,14 @@
     </div>
     <ul>
       <li v-for="poll in polls">
-        {{ poll.title }}
-        {{ poll.question }}
+        {{ poll.title }}<br/>
+        {{ poll.question }}<br/>
         {{ poll.active}}
         <ul>
           <li v-for="el in poll.options">{{ el }}</li>
+        </ul>
+        <ul>
+          <li v-for="el in poll.settings">{{ el }}</li>
         </ul>
       </li>
     </ul>
@@ -142,6 +172,8 @@ export default {
     },
 
     validateDates: function() {
+      if (this.newPoll.settings.reveal === '') { this.newPoll.settings.reveal = this.newPoll.settings.stop };
+
       let zero = this.now;
       let start = new Date(Date.parse(this.newPoll.settings.start));
           start = Date.parse(`${start.getFullYear()}-${start.getMonth()}-${start.getDate()}`);
@@ -149,8 +181,8 @@ export default {
       let stop = new Date(Date.parse(this.newPoll.settings.stop));
           stop = Date.parse(`${stop.getFullYear()}-${stop.getMonth()}-${stop.getDate()}`);
 
-      let reveal = new Date(this.newPoll.settings.reveal == "" ? Date.parse(this.newPoll.settings.stop) : Date.parse(this.newPoll.settings.reveal));
-          reveal = Date.parse(`${reveal.getFullYear()}-${reveal.getMonth()}-${reveal.getDate()}`);
+      // let reveal = new Date(Date.parse(this.newPoll.settings.reveal));
+      //     reveal = Date.parse(`${reveal.getFullYear()}-${reveal.getMonth()}-${reveal.getDate()}`);
 
       if (stop < start) {
         alert("Start date cannot be set to after the end date");
