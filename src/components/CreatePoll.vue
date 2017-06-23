@@ -85,16 +85,10 @@
       </form>
     </div>
     <ul>
-      <li v-for="poll in polls">
-        {{ poll.title }}<br/>
-        {{ poll.question }}<br/>
-        {{ poll.active}}
-        <ul>
-          <li v-for="el in poll.options">{{ el }}</li>
-        </ul>
-        <ul>
-          <li v-for="el in poll.settings">{{ el }}</li>
-        </ul>
+      <li class="db-entry" v-for="poll in polls">
+        <ul v-for="(value, key) in poll">
+          <strong>{{key}} :</strong> {{value}}
+        </ul> 
       </li>
     </ul>
   </div>
@@ -111,6 +105,7 @@ export default {
   data() {
     return {
       newPoll: {
+        id: '',
         title: '',
         question: '',
         options: [],
@@ -142,6 +137,8 @@ export default {
         alert("Add at least two options");
         return;
       }
+
+      this.newPoll.id = Date.now();
 
       if(!this.validateDates()) {
         return;
@@ -200,5 +197,7 @@ export default {
 
 
 <style scoped>
-
+  .db-entry {
+    padding-bottom: 15px;
+  }
 </style>
